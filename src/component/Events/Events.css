@@ -1,0 +1,75 @@
+.HeadEvent {
+  display: flex;
+  height: 258px;
+  padding: 20px 20px 10px 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.HeadEvent h2 {
+  width: 315px;
+  margin: 0;
+}
+
+.EventsVertical {
+  padding-top: 368px; /* Ajustez cette valeur pour laisser de la place au bouton */
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  align-items: center;
+  align-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative; /* Ajoutez cette ligne pour définir un contexte de positionnement pour les enfants */
+  z-index: 1; /* Assurez-vous que la liste des événements a un z-index supérieur */
+}
+
+.AddEventButton {
+  border-radius: 50%;
+  border: 1px solid #FFF;
+  background-color: #121212;
+  color: #FFF;
+  padding: 15px 25px;
+  font-size: 36px;
+  cursor: pointer;
+  outline: none;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 50px;
+  z-index: 2; /* Assurez-vous que le bouton a un z-index supérieur à la liste des événements */
+}
+
+.Title {
+  font-size : 24px;
+  margin: 0;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.Date {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin:0;
+}
+.fullWidth {
+  width: 340px;
+  height: 109px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+}
+
+/* Assurez-vous de définir les styles par défaut pour les divs Event_1 */
+.Event_1 {
+  width: 166px; /* ou toute autre largeur par défaut */
+  height: 234px; /* ou toute autre hauteur par défaut */
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}

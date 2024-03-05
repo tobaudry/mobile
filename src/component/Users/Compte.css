@@ -1,0 +1,49 @@
+.DataUser {
+  padding: 0px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.DataUser .left {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+}
+.data {
+  margin-top: 60px;
+}
+.LogOut button {
+  width: 232px;
+  height: 54px;
+  border-radius: 30px;
+  border: 1px solid #FFF;
+  background-color: transparent;
+  color: #FFF;
+}
+
+.LogOut {
+  position: fixed; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  bottom: 50px;
+}
+.InputTextUsername {
+  padding: 20px 20px 20px 20px;
+}
+.InputTextUsername input{
+  width: 90%;
+  height: 30px;
+  border-radius: 30px;
+  border: 1px solid #FFF;
+  background-color: transparent;
+  color: #FFF;
+  padding: 0px 20px 0px 20px;
+}
+.rc-imageselect-challenge {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  transform: scale(0.5);
+}

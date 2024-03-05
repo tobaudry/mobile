@@ -1,0 +1,13 @@
+.Slide {
+  display: flex;
+  height: 30px;
+  padding: 0px 20px;
+  margin-right: 20px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 23px;
+  border: 1px solid;
+  font-size: 20px;
+  white-space: nowrap;
+}
+

@@ -1,0 +1,15 @@
+.SlideEvents {
+  display: flex;
+  padding:0px 0px 0px 20px;
+  overflow-x: auto;
+  height: 60px;
+  scrollbar-width: none;
+}
+
+.SlideEvents-2 {
+  display: flex;
+  padding: 0px 20px 0px 0px;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto; 
+}

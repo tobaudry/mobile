@@ -1,0 +1,64 @@
+.fixed {
+  position:fixed;
+  background-color: #121212;
+  width:100%;
+}
+.ScrollFriends {
+  
+  padding-top: 635px;
+}
+.ami-image {
+  width: 30px; /* Ajustez la taille selon vos besoins */
+  height: 30px; /* Ajustez la taille selon vos besoins */
+  border-radius: 50%; /* Rendre l'image ronde */
+  margin-right: 10px; /* Espace entre l'image et le texte */
+  border: 2px solid transparent; /* Ajout d'une bordure pour indiquer l'état */
+  transition: border-color 0.3s ease; /* Animation de transition pour une meilleure expérience utilisateur */
+  object-fit: cover;
+}
+input[type="checkbox"] {
+  display: none;
+}
+label {
+  margin: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.SelectFriends {
+  padding: 0px 20px 0px 20px;
+  padding-top: 580px;
+}
+
+.left-friends {
+  display: flex;
+  align-items: center;
+}
+input[type="checkbox"]:checked + .ami-image {
+  border-color: green; /* Changement de couleur de la bordure */
+}
+input[type="checkbox"]:checked + .ami-image + label {
+  color: green; /* Changement de couleur du label */
+}
+.input-date input[type="date"]::-webkit-calendar-picker-indicator,
+.input-date input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(50%);
+}
+
+.input-date {
+  display: flex;
+  position: relative; /* Ajout pour positionner correctement le paragraphe */
+}
+
+.input-date input {
+  font-size: 12px;
+  border-radius: 30px;
+  border: 1px solid #FFF;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.30);
+  opacity: 0.7;
+  text-align: center;
+  padding: 3px;
+}
+

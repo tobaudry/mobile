@@ -1,0 +1,100 @@
+.EventDetails {
+  display: flex;
+  flex-direction: column;
+  /* padding-top:290px; */
+}
+
+.description {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0px 20px 0px 20px;
+}
+
+.description p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.30);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.photo-container {
+  display: flex;
+  padding: 10px 20px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 5px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.photo-container img {
+  width: 110px;
+  height: 130px;
+  object-fit: cover;
+}
+
+.overlay {
+  width: 110px;
+  height: 130px;
+  background-color: transparent;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.overlay::before {
+  content: "+";
+  color: white;
+  font-size: 24px;
+}
+
+.overlay:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Couleur de fond avec transparence au survol */
+}
+
+.popup-inner {
+  position: fixed;
+  
+  background-color: black;
+  max-width: 90%; /* Utilisez la largeur maximale de 90% de l'écran */
+  max-height: 90%; /* Utilisez la hauteur maximale de 90% de l'écran */
+  overflow: auto; /* Ajoutez une barre de défilement si l'image est trop grande */
+}
+
+.popup-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ajuste l'image pour qu'elle s'affiche entièrement sans déborder */
+}
+
+
+
+.countdown {
+/* position : fixed; */
+top : 50%;
+bottom: 50%;
+padding: 20% 0% 50% 0%;
+display : flex;
+align-items: center;
+justify-content: center;
+}
+.countdown h1 {
+  font-weight: normal;
+  padding: 0px 20px 0px 20px
+}
+
+.countdown li {
+  display: inline-block;
+  list-style-type: none;
+  padding: 20px 10px 20px 20px;
+  text-transform: uppercase;
+}
+.countdown li span {
+  display: block;
+  font-size: 20px;
+}

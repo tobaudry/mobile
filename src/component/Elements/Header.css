@@ -1,0 +1,161 @@
+.HeadEvent {
+  /* position: fixed; */
+  margin:0px;
+  background-color: #121212;
+}
+.icon {
+  display: flex;
+  height: 66px;
+  padding: 10px 0px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.icon svg{
+  width: 40px;
+  height: 40px;
+}
+
+.HeadEvent {
+  margin:0px;
+  background-color: #121212;
+}
+
+.icon {
+  display: flex;
+  height: 66px;
+  padding: 10px 0px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.icon-right {
+  display: flex;
+  height: 66px;
+  padding: 10px 0px;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.Friends {
+  position: relative; /* Position relative pour servir de référence à la pastille */
+}
+
+.NbrFriends {
+  position: absolute; /* Position absolue pour la pastille */
+  top: 0;
+  right: 0;
+}
+
+.NbrFriends p {
+  background-color: red;
+  margin: 0;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.iconFriends img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.ProfilPic {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+.modif {
+  position: relative;
+}
+.modif svg {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right:1px;
+  bottom:6px;
+}
+
+
+.ProfilPic img {
+  border-radius: 50%; /* Rendre l'image ronde */
+  width: 100px;
+  height: 100px;
+  object-fit: cover; /* Assurez-vous que l'image remplit le cercle */
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease; 
+}
+
+.popup-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.popup input {
+  display:none;
+}
+
+.popup .ChangePic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  height: 40px;
+  border-radius: 30px;
+  border: 1px solid #FFF;
+}
+.popup button {
+  background-color: transparent;
+  color: #FFF;
+  border-style: none;
+}
+.popup-enter {
+  transform: translateY(-100%);
+}
+
+.popup-enter-active {
+  transform: translateY(0);
+}
+
+.popup-exit {
+  transform: translateY(0);
+}
+
+.popup-exit-active {
+  transform: translateY(-100%);
+}
