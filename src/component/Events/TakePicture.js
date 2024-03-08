@@ -79,9 +79,6 @@ export default function TakePicture() {
     setFlashOn(!flashOn);
   };
 
-  const toggleCameraFacingMode = () => {
-    setCameraFacingMode(cameraFacingMode === "environment" ? "user" : "environment");
-  };
 
   return (
     <div>
@@ -94,7 +91,7 @@ export default function TakePicture() {
             ) : (
               <FlashOffIcon onClick={toggleFlash} />
             )}
-            <LoopIcon onClick={toggleCameraFacingMode} />
+            <LoopIcon/>
           </div>
         </div>
         <h2>v1</h2>
