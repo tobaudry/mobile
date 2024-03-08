@@ -21,7 +21,7 @@ export default function TakePicture() {
 
   useEffect(() => {
     const constraints = { video: { facingMode: cameraFacingMode } };
-
+  
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
@@ -32,13 +32,13 @@ export default function TakePicture() {
       .catch((error) => {
         console.error("Error accessing media devices: ", error);
       });
-
+  
     return () => {
       // Cleanup: Stop the video stream when component unmounts
-      if (videoRef.current.srcObject) {
+      if (videoRef.current && videoRef.current.srcObject) {
         const stream = videoRef.current.srcObject;
         const tracks = stream.getTracks();
-
+  
         tracks.forEach((track) => {
           track.stop();
         });
