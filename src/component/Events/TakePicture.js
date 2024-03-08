@@ -1,8 +1,9 @@
+// Importez useState en haut de votre fichier
 import React, { useRef, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase-config";
 import { ref, uploadBytes } from "firebase/storage";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import FlashOffIcon from "@mui/icons-material/FlashOff";
@@ -12,26 +13,24 @@ import "./TakePicture.css";
 
 export default function TakePicture() {
   const videoRef = useRef(null);
-  const navigate = useNavigate();
   const { eventId } = useParams();
   const [cameraActive, setCameraActive] = useState(true);
-  const [flashOn, setFlashOn] = useState(false); // État du flash
-
-  const handleEventClickNavigate = () => {
-    navigate(`/event/${eventId}`);
-  };
+  const [flashOn, setFlashOn] = useState(false);
+  const [cameraFacingMode, setCameraFacingMode] = useState("environment"); // "user" for front camera, "environment" for back camera
 
   useEffect(() => {
-    const videoRefCurrent = videoRef.current; // Capture videoRef.current
+    const videoRefCurrent = videoRef.current;
   
     const handleCapture = async () => {
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: cameraFacingMode // Utiliser la caméra avant ou arrière selon l'état de cameraFacingMode
+          }
         });
-        videoRefCurrent.srcObject = mediaStream; // Use the captured reference
+        videoRefCurrent.srcObject = stream;
       } catch (error) {
-        console.error("Error accessing camera:", error);
+        console.error("Erreur lors de l'accès à la caméra:", error);
       }
     };
   
@@ -43,7 +42,7 @@ export default function TakePicture() {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [cameraFacingMode]); // Assurez-vous de réagir aux changements de cameraFacingMode
 
   const handleSnapshot = async () => {
     setCameraActive(false);
@@ -87,7 +86,7 @@ export default function TakePicture() {
       ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       canvas.toBlob(async (blob) => {
         await uploadBytes(imgRef, blob);
-        navigate(`/event/${eventId}`);
+        setCameraActive(true); // Réactivez la caméra après la capture de la photo
       }, "image/jpeg");
     }
   };
@@ -96,18 +95,23 @@ export default function TakePicture() {
     setFlashOn(!flashOn);
   };
 
+  const toggleCameraFacingMode = () => {
+    // Basculez entre la caméra avant et arrière
+    setCameraFacingMode(cameraFacingMode === "environment" ? "user" : "environment");
+  };
+
   return (
     <div>
       <div className="HeadEvent">
         <div className="icon">
-          <ArrowBackIosIcon onClick={handleEventClickNavigate} />
+          <ArrowBackIosIcon onClick={() => setCameraActive(true)} />
           <div>
             {flashOn ? (
               <FlashOnIcon onClick={toggleFlash} />
             ) : (
               <FlashOffIcon onClick={toggleFlash} />
             )}
-            <LoopIcon />
+            <LoopIcon onClick={toggleCameraFacingMode} />
           </div>
         </div>
         <h2>v1</h2>
