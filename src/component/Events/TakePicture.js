@@ -44,6 +44,7 @@ export default function TakePicture() {
       }
     };
   }, []);
+
   const handleSnapshot = async () => {
     setCameraActive(false);
 
@@ -109,7 +110,7 @@ export default function TakePicture() {
             <LoopIcon />
           </div>
         </div>
-        <h2>Souriez, vous êtes filmés</h2>
+        <h2>v1</h2>
       </div>
 
       {cameraActive && (
