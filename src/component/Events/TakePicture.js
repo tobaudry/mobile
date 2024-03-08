@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase-config";
 import { ref, uploadBytes } from "firebase/storage";
@@ -18,6 +18,33 @@ export default function TakePicture() {
   const [cameraActive, setCameraActive] = useState(true);
   const [flashOn, setFlashOn] = useState(false);
   const [cameraFacingMode, setCameraFacingMode] = useState("environment");
+
+  useEffect(() => {
+    const constraints = { video: { facingMode: cameraFacingMode } };
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      })
+      .catch((error) => {
+        console.error("Error accessing media devices: ", error);
+      });
+
+    return () => {
+      // Cleanup: Stop the video stream when component unmounts
+      if (videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject;
+        const tracks = stream.getTracks();
+
+        tracks.forEach((track) => {
+          track.stop();
+        });
+      }
+    };
+  }, [cameraFacingMode]);
 
   const handleEventClickNavigate = () => {
     navigate(`/event/${eventId}`);
@@ -39,7 +66,7 @@ export default function TakePicture() {
     ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     // Convert the canvas content to a data URL representing the image
-    const dataUrl = canvas.toDataURL('image/jpeg');
+    const dataUrl = canvas.toDataURL("image/jpeg");
 
     // Upload the image data to Firebase Storage
     await uploadBytes(imgRef, dataUrl);
