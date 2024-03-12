@@ -9,7 +9,6 @@ import FlashOffIcon from "@mui/icons-material/FlashOff";
 import LoopIcon from "@mui/icons-material/Loop";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Webcam from 'react-webcam';
-import { useTorchLight } from '@blackbox-vision/use-torch-light';
 
 import "./TakePicture.css";
 
@@ -21,8 +20,7 @@ export default function TakePicture() {
   const [facingMode, setFacingMode] = useState('environment');
   const [showModal, setShowModal] = useState(false); // State for modal
   const webcamRef = useRef(null);
-  const streamRef = useRef(); // Reference to the stream
-  const [/* on */, toggle] = useTorchLight(streamRef.current);
+
   const handleEventClickNavigate = () => {
     navigate(`/event/${eventId}`);
   };
@@ -82,7 +80,6 @@ export default function TakePicture() {
 
   const handleToggleFlash = () => {
     setFlash(prevFlash => !prevFlash);
-    toggle(); // Toggle the torch light
   };
 
   const handleToggleCamera = () => {
