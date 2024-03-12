@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase-config";
 import { ref, uploadBytes } from "firebase/storage";
@@ -44,6 +44,9 @@ export default function TakePicture() {
     setFlash(prevFlash => !prevFlash);
   };
 
+  const handleToggleCamera = () => {
+    setFacingMode(prevMode => (prevMode === 'user' ? 'environment' : 'user'));
+  };
   return (
     <div>
       <div className="HeadEvent">
@@ -55,7 +58,7 @@ export default function TakePicture() {
             ) : (
               <FlashOffIcon onClick={handleToggleFlash} />
             )}
-            <LoopIcon/>
+            <LoopIcon onClick={handleToggleCamera}/>
           </div>
         </div>
         <h2>v1</h2>
