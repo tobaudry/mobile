@@ -1,9 +1,14 @@
 .Camera {
   padding: 0px 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px); /* Soustraire la hauteur de la barre d'en-tête */
 }
-video {
-  width:300px;
-  height:300px;
+
+.Camera video {
+  max-width: calc(100% - 40px); /* Soustraire le padding de chaque côté */
+  max-height: calc(100% - 40px); /* Soustraire le padding de chaque côté */
 }
 
 .white-screen {
