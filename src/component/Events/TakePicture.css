@@ -3,12 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px); /* Soustraire la hauteur de la barre d'en-tête */
+  /* height: calc(100vh - 80px); */
 }
 
 .Camera video {
-  max-width: calc(100% - 40px); /* Soustraire le padding de chaque côté */
-  max-height: calc(100% - 40px); /* Soustraire le padding de chaque côté */
+  max-width: calc(100% - 20px);
+  max-height: calc(100% - 20px); 
 }
 
 .white-screen {
