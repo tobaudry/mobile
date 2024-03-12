@@ -93,7 +93,7 @@ export default function TakePicture() {
   }, [flash, showModal]);
 
   return (
-    <div>
+    <div style={{position:"fixed", width:"100%"}}>
       <div className="HeadEvent">
         <div className="icon">
           <ArrowBackIosIcon onClick={handleEventClickNavigate} />

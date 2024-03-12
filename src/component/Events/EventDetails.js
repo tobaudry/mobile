@@ -202,7 +202,7 @@ function EventDetails() {
 
   if (eventDetails) {
     return (
-      <div>
+      <div >
         <HeaderReturnFav
           text={eventDetails.title}
           isFavorited={
