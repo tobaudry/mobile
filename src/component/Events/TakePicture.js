@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase-config";
 import { ref, uploadBytes } from "firebase/storage";
@@ -9,6 +9,7 @@ import FlashOffIcon from "@mui/icons-material/FlashOff";
 import LoopIcon from "@mui/icons-material/Loop";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Webcam from 'react-webcam';
+import { useTorchLight } from '@blackbox-vision/use-torch-light';
 
 import "./TakePicture.css";
 
@@ -18,39 +19,81 @@ export default function TakePicture() {
   const [cameraActive, setCameraActive] = useState(true);
   const [flash, setFlash] = useState(false);
   const [facingMode, setFacingMode] = useState('environment');
-  const webcamRef = useRef(null); 
-
+  const [showModal, setShowModal] = useState(false); // State for modal
+  const webcamRef = useRef(null);
+  const streamRef = useRef(); // Reference to the stream
+  const [/* on */, toggle] = useTorchLight(streamRef.current);
   const handleEventClickNavigate = () => {
     navigate(`/event/${eventId}`);
   };
 
   const handleSnapshot = async () => {
     setCameraActive(false);
+    if (facingMode === 'user' && flash) {
+      setShowModal(true); 
+      setTimeout(() => {
+        setShowModal(false);
+        captureImage();
+      }, 500);
+    } else {
+      captureImage();
+    }
+  };
 
+  const captureImage = async () => {
     const uid = uuidv4();
     const folderPath = `events/${eventId}/${uid}`;
     const imgRef = ref(storage, `${folderPath}.jpeg`);
 
-    const imageSrc = webcamRef.current.getScreenshot();
+    let imageSrc = webcamRef.current.getScreenshot();
 
     // Convertir l'URL de données en un fichier JPEG
     const response = await fetch(imageSrc);
     const blob = await response.blob();
 
-    // Upload the image blob to Firebase Storage
-    await uploadBytes(imgRef, blob);
+    // Si facingMode est 'user', inverser l'image horizontalement
+    if (facingMode === 'user') {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-    // Réinitialiser l'état de la caméra
-    setCameraActive(true);
+      const image = new Image();
+      image.src = URL.createObjectURL(blob);
+      await new Promise(resolve => {
+        image.onload = () => {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0, image.width, image.height);
+          ctx.scale(-1, 1); 
+          ctx.drawImage(image, -image.width, 0, image.width, image.height);
+          resolve();
+        };
+      });
+
+      canvas.toBlob(async (blob) => {
+        await uploadBytes(imgRef, blob);
+        setCameraActive(true);
+      }, 'image/jpeg');
+    } else {
+      // Upload the image blob to Firebase Storage
+      await uploadBytes(imgRef, blob);
+      setCameraActive(true);
+    }
   };
 
   const handleToggleFlash = () => {
     setFlash(prevFlash => !prevFlash);
+    toggle(); // Toggle the torch light
   };
 
   const handleToggleCamera = () => {
     setFacingMode(prevMode => (prevMode === 'user' ? 'environment' : 'user'));
   };
+
+  useEffect(() => {
+    if (!flash && showModal) {
+      setShowModal(false);
+    }
+  }, [flash, showModal]);
 
   return (
     <div>
@@ -73,6 +116,16 @@ export default function TakePicture() {
         <button className="AddEventButton" onClick={handleSnapshot}>
           <CameraAltIcon />
         </button>
+      )}
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="modal-body">
+              <div className="white-screen"></div>
+            </div>
+          </div>
+        </div>
       )}
 
       <div className="Camera">
