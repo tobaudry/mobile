@@ -84,7 +84,7 @@ function Compte() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{position:"fixed", width:"100%"}}>
       <HeaderPics text="Ton compte" />
 
       <div className="description">

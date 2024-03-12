@@ -194,7 +194,7 @@ function Amis() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{position:"fixed", width:"100%"}}>
       <HeaderReturn text="Ajouter des amis" />
       {showInvitations && userData && senderUserData ? (
         <div>
