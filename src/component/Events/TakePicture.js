@@ -29,14 +29,18 @@ export default function TakePicture() {
 
     const uid = uuidv4();
     const folderPath = `events/${eventId}/${uid}`;
-    const imgRef = ref(storage, folderPath);
+    const imgRef = ref(storage, `${folderPath}.jpeg`);
 
     const imageSrc = webcamRef.current.getScreenshot();
 
-    // Upload the image data to Firebase Storage
-    await uploadBytes(imgRef, imageSrc);
+    // Convertir l'URL de données en un fichier JPEG
+    const response = await fetch(imageSrc);
+    const blob = await response.blob();
 
-    // Reset camera active state
+    // Upload the image blob to Firebase Storage
+    await uploadBytes(imgRef, blob);
+
+    // Réinitialiser l'état de la caméra
     setCameraActive(true);
   };
 
@@ -47,6 +51,7 @@ export default function TakePicture() {
   const handleToggleCamera = () => {
     setFacingMode(prevMode => (prevMode === 'user' ? 'environment' : 'user'));
   };
+
   return (
     <div>
       <div className="HeadEvent">
@@ -77,6 +82,7 @@ export default function TakePicture() {
           videoConstraints={{ facingMode: facingMode }}
           flash={flash}
           ref={webcamRef}
+          style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
         />
       </div>
     </div>
