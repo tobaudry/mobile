@@ -49,22 +49,37 @@ export default function TakePicture() {
     const response = await fetch(imageSrc);
     const blob = await response.blob();
   
-    // Ajouter la date de création actuelle à chaque photo
-    const createdAt = new Date().toISOString();
+    // Créer un objet Image à partir du blob
+    const img = new Image();
+    img.src = URL.createObjectURL(blob);
   
-    // Si facingMode est 'user', inverser l'image horizontalement
+    // Attendre que l'image soit chargée
+    await new Promise(resolve => {
+      img.onload = resolve;
+    });
+  
+    // Créer un canevas pour effectuer la transformation
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+  
+    // Retourner l'image horizontalement
     if (facingMode === 'user') {
-      const metadata = {
-        contentType: 'image/jpeg',
-        customMetadata: {
-          createdAt: createdAt
-        }
-      };
-  
-      // Upload the image blob to Firebase Storage with metadata
-      await uploadBytes(imgRef, blob, metadata);
-      setCameraActive(true);
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.translate(img.width, 0);
+      ctx.scale(-1, 1); // Inverser horizontalement
+      ctx.drawImage(img, 0, 0);
     } else {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+    }
+  
+    // Convertir le canevas en un blob JPEG
+    canvas.toBlob(async (canvasBlob) => {
+      // Ajouter la date de création actuelle à chaque photo
+      const createdAt = new Date().toISOString();
+  
       // Ajouter la date de création à la métadonnée de l'image
       const metadata = {
         contentType: 'image/jpeg',
@@ -74,10 +89,11 @@ export default function TakePicture() {
       };
   
       // Upload the image blob to Firebase Storage with metadata
-      await uploadBytes(imgRef, blob, metadata);
+      await uploadBytes(imgRef, canvasBlob, metadata);
       setCameraActive(true);
-    }
+    }, 'image/jpeg');
   };
+  
   
   
 
