@@ -43,7 +43,7 @@ export default function TakePicture() {
     const folderPath = `events/${eventId}/${uid}`;
     const imgRef = ref(storage, `${folderPath}.jpeg`);
   
-    let imageSrc = webcamRef.current.getScreenshot();
+    let imageSrc = await webcamRef.current.getScreenshot(); // Attendre la résolution de la promesse
   
     // Convertir l'URL de données en un fichier JPEG
     const response = await fetch(imageSrc);
@@ -54,7 +54,16 @@ export default function TakePicture() {
   
     // Si facingMode est 'user', inverser l'image horizontalement
     if (facingMode === 'user') {
-      // ...
+      const metadata = {
+        contentType: 'image/jpeg',
+        customMetadata: {
+          createdAt: createdAt
+        }
+      };
+  
+      // Upload the image blob to Firebase Storage with metadata
+      await uploadBytes(imgRef, blob, metadata);
+      setCameraActive(true);
     } else {
       // Ajouter la date de création à la métadonnée de l'image
       const metadata = {
@@ -69,6 +78,7 @@ export default function TakePicture() {
       setCameraActive(true);
     }
   };
+  
   
 
   const handleToggleFlash = () => {
