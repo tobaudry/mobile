@@ -7,9 +7,17 @@
 .DataUser .left {
   display: flex;
   justify-content: space-between;
-  align-self: flex-start;
   align-items: center;
-  justify-content: center;
+}
+
+.InputCode {
+  display: flex;
+}
+
+.InputCode input {
+  width: 30px; /* Ajustez la taille selon vos besoins */
+  height: 30px; /* Ajustez la taille selon vos besoins */
+  margin-right: 10px; /* Espace entre les carrés */
 }
 .data {
   margin-top: 60px;

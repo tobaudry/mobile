@@ -88,7 +88,7 @@ function PhoneSignIn() {
   }, []);
 
   return (
-    <div>
+    <div style={{ position: "fixed" }}>
       <div>
         <div className="popupPhone">
           <div className="left">
@@ -98,6 +98,7 @@ function PhoneSignIn() {
                 value={phone}
                 onChange={(phone) => setPhone("+" + phone)}
                 inputStyle={{ backgroundColor: "transparent" }}
+                style={{ touchAction: "manipulation" }}
               />
             </div>
             <div className="InvitUsers">
@@ -127,11 +128,11 @@ function PhoneSignIn() {
                       maxLength={1}
                       value={value}
                       onChange={(e) => handleCodeChange(index, e.target.value)}
+                      style={{ touchAction: "manipulation" }} // Ajout de la propriété CSS
                     />
                   ))}
                 </div>
               </div>
-            
             </div>
           </div>
         )}
