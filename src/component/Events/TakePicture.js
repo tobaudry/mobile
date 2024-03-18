@@ -42,41 +42,34 @@ export default function TakePicture() {
     const uid = uuidv4();
     const folderPath = `events/${eventId}/${uid}`;
     const imgRef = ref(storage, `${folderPath}.jpeg`);
-
+  
     let imageSrc = webcamRef.current.getScreenshot();
-
+  
     // Convertir l'URL de données en un fichier JPEG
     const response = await fetch(imageSrc);
     const blob = await response.blob();
-
+  
+    // Ajouter la date de création actuelle à chaque photo
+    const createdAt = new Date().toISOString();
+  
     // Si facingMode est 'user', inverser l'image horizontalement
     if (facingMode === 'user') {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      const image = new Image();
-      image.src = URL.createObjectURL(blob);
-      await new Promise(resolve => {
-        image.onload = () => {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          ctx.drawImage(image, 0, 0, image.width, image.height);
-          ctx.scale(-1, 1); 
-          ctx.drawImage(image, -image.width, 0, image.width, image.height);
-          resolve();
-        };
-      });
-
-      canvas.toBlob(async (blob) => {
-        await uploadBytes(imgRef, blob);
-        setCameraActive(true);
-      }, 'image/jpeg');
+      // ...
     } else {
-      // Upload the image blob to Firebase Storage
-      await uploadBytes(imgRef, blob);
+      // Ajouter la date de création à la métadonnée de l'image
+      const metadata = {
+        contentType: 'image/jpeg',
+        customMetadata: {
+          createdAt: createdAt
+        }
+      };
+  
+      // Upload the image blob to Firebase Storage with metadata
+      await uploadBytes(imgRef, blob, metadata);
       setCameraActive(true);
     }
   };
+  
 
   const handleToggleFlash = () => {
     setFlash(prevFlash => !prevFlash);

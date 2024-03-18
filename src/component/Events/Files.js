@@ -5,6 +5,7 @@ import {
   getDownloadURL,
   ref,
   deleteObject,
+  getMetadata,
 } from "firebase/storage";
 import { storage } from "../../firebase-storage";
 
@@ -55,13 +56,20 @@ async function readAllPhotos(folderPath) {
     const folderRef = ref(storage, folderPath);
     const listResult = await listAll(folderRef);
     const photoURLs = [];
+
     await Promise.all(
       listResult.items.map(async (itemRef) => {
         const photoURL = await getDownloadURL(itemRef);
-        photoURLs.push(photoURL);
+        const metadata = await getMetadata(itemRef); // Get metadata for each photo
+        const createdAt = metadata.customMetadata.createdAt; // Get creation date
+        photoURLs.push({ url: photoURL, createdAt: createdAt }); // Push URL and creation date to array
       })
     );
-    return photoURLs;
+
+    // Sort photos by creation date
+    photoURLs.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    return photoURLs.map(photo => photo.url); // Return only the URLs
   } catch (error) {
     console.error(
       "Une erreur s'est produite lors de la lecture des photos :",
@@ -70,5 +78,6 @@ async function readAllPhotos(folderPath) {
     throw error;
   }
 }
+
 
 export { addFile, readAllPhotos, addProfilPic, deleteFolder };

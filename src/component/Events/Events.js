@@ -283,79 +283,111 @@ function Event() {
           {filteredEvents.map((event) => {
             const isEventInProgress = event.inProgress;
 
-            return (
-              <li
-                key={event.EventId}
-                onClick={() => handleEventClickNavigate(event.EventId)}
-              >
-                <div
-                  style={{
-                    borderRadius: getBorderRadius(
-                      getRandomZeroRadiusPosition()
-                    ),
-                    overflow: "hidden",
-                    position: "relative",
-                    border:
-                      event.Cover && event.Cover[user.uid]
-                        ? isEventInProgress
-                          ? "2px solid #ff28ff"
-                          : "1px solid white"
-                        : isEventInProgress
-                        ? "2px solid #ff28ff"
-                        : "1px solid white",
-                  }}
-                  className="Event_1"
-                >
-                  {event.Cover && event.Cover[user.uid] && (
-                    <img
-                      src={event.Cover[user.uid]}
-                      alt={`Profil`}
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        zIndex: -1,
-                        opacity: "0.5",
-                      }}
-                    />
-                  )}
-                  <div
-                    className="Random"
-                    style={{
-                      paddingLeft: "5px",
-                      position: "absolute",
-                      top: `${10 + Math.random() * 50}%`,
-                      maxWidth: "80%",
-                      maxHeight: "80%",
-                      overflow: "hidden",
-                      ...(Math.random() > 0.5
-                        ? { right: "5px", textAlign: "right" }
-                        : { left: "5px", textAlign: "left" }),
-                    }}
-                  >
-                    <p
-                      className="Title"
-                      style={{
-                        color: isEventInProgress ? "#ff28ff" : "inherit",
-                      }}
-                    >
-                      {event.title}
-                    </p>
-                    <p
-                      className="Date"
-                      style={{
-                        color: isEventInProgress ? "#ff28ff" : "inherit",
-                      }}
-                    >
-                      {new Date(event.date).toLocaleDateString("fr-FR")}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            );
+          // À l'intérieur de la boucle map des événements
+return (
+  <li
+    key={event.EventId}
+    onClick={() => handleEventClickNavigate(event.EventId)}
+  >
+    <div
+      style={{
+        borderRadius: getBorderRadius(
+          getRandomZeroRadiusPosition()
+        ),
+        overflow: "hidden",
+        position: "relative",
+        border:
+          event.Cover && event.Cover[user.uid]
+            ? isEventInProgress
+              ? "none"
+              : "none"
+            : isEventInProgress
+            ? "1px solid white"
+            : "1px solid white",
+      }}
+      className="Event_1"
+    >
+      {/* Ajout de la pastille violette */}
+      {isEventInProgress && (
+        <div
+          style={{
+            position: "absolute",
+            top: "15px",
+            left: "15px",
+            width: "15px",
+            height: "15px",
+            backgroundColor: "#ff28ff",
+            borderRadius: "50%",
+            zIndex: "1",
+          }}
+        ></div>
+      )}
+      {isEventInProgress && (
+        <div
+          style={{
+            position: "absolute",
+            top: "15px",
+            left: "40px",
+            color: "#ff28ff",
+            fontSize: "15px",
+            fontWeight: "bold",
+            zIndex: "1",
+          }}
+        >
+          En cours
+        </div>
+      )}
+      {event.Cover && event.Cover[user.uid] && (
+        <img
+          src={event.Cover[user.uid]}
+          alt={`Profil`}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -1,
+            opacity: "0.5",
+          }}
+        />
+      )}
+      <div
+        className="Random"
+        style={{
+          paddingLeft: "5px",
+          position: "absolute",
+          top: `${10 + Math.random() * 50}%`,
+          maxWidth: "80%",
+          maxHeight: "80%",
+          overflow: "hidden",
+          ...(Math.random() > 0.5
+            ? { right: "5px", textAlign: "right" }
+            : { left: "5px", textAlign: "left" }),
+        }}
+      >
+        <p
+          className="Title"
+          style={{
+            color: isEventInProgress ? "inherit" : "inherit",
+          }}
+        >
+          {event.title}
+        </p>
+        <p
+          className="Date"
+          style={{
+            color: isEventInProgress ? "inherit" : "inherit",
+          }}
+        >
+          {new Date(event.date).toLocaleDateString("fr-FR")}
+        </p>
+      </div>
+    </div>
+  </li>
+);
+
           })}
         </ul>
       </div>
