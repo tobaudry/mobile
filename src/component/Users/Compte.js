@@ -36,6 +36,11 @@ function Compte() {
   const handleUsernameChange = (e) => {
     setNewUsername(e.target.value.trim());
   };
+  const confirmUpdateUsername = () => {
+    if (window.confirm("Êtes-vous sûr de vouloir changer votre nom d'utilisateur ?")) {
+      handleUpdateUsername();
+    }
+  };
 
   const handleUpdateUsername = () => {
     const UsersRef = ref(database, "users");
@@ -134,10 +139,10 @@ function Compte() {
                     />
                   </div>
                   <div className="InvitUsers">
-                    <button
-                      onClick={handleUpdateUsername}
-                      disabled={isButtonDisabled}
-                    >
+                  <button
+                    onClick={confirmUpdateUsername}
+                    disabled={isButtonDisabled}
+                  >
                       changer
                     </button>
                   </div>

@@ -1,6 +1,5 @@
 .HeadEvent {
   display: flex;
-  height: 258px;
   padding: 20px 20px 10px 20px;
   flex-direction: column;
   justify-content: space-between;
@@ -11,17 +10,18 @@
 .HeadEvent h2 {
   width: 315px;
   margin: 0;
+  padding-top: 30px;
 }
 
 .EventsVertical {
-  padding-top: 368px; /* Ajustez cette valeur pour laisser de la place au bouton */
-  display: grid; /* Utiliser une grille CSS */
-  grid-template-columns: repeat(2, 1fr); /* Deux colonnes égales */
-  grid-gap: 10px; /* Espacement entre les éléments */
+  padding-top: 335px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  grid-gap: 10px; 
   padding-left: 20px;
   padding-right: 20px;
-  position: relative; /* Ajoutez cette ligne pour définir un contexte de positionnement pour les enfants */
-  z-index: 1; /* Assurez-vous que la liste des événements a un z-index supérieur */
+  position: relative; 
+  z-index: 1; 
 }
 
 .AddEventButton {

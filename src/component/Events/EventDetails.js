@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {  database } from "../../firebase-config";
-import { ref, onValue, set } from "firebase/database"; 
+import { ref, onValue, set, remove } from "firebase/database"; 
 import { readAllPhotos } from "./Files";
 import { useParams, useNavigate } from "react-router-dom";
 import useAuthState from "../Fonctions/UseAuthState";
 import HeaderReturnFav from "../Elements/HeaderReturnFav";
 import { update } from "firebase/database";
 import afficherLoader from "../Fonctions/Loader";
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import "./EventDetails.css";
 
 function EventDetails() {
@@ -195,6 +195,20 @@ function EventDetails() {
         });
     }
   };
+  const handleDeleteEvent = () => {
+    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
+    if (confirmDelete) {
+      // Supprimer l'événement de la base de données
+      remove(ref(database, `events/${eventId}`))
+        .then(() => {
+          console.log("L'événement a été supprimé avec succès.");
+          navigate("/"); // Rediriger vers une autre page après la suppression
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la suppression de l'événement :", error);
+        });
+    }
+  };
 
   if (loading) {
     return <div>{afficherLoader()}</div>; // Display loading indicator while loading
@@ -243,9 +257,15 @@ function EventDetails() {
           {/* Evenemnt en cours  */}
           {isBeforeEndTime && isAfterStartTime ? (
             <div>
-              <div className="description">
-                <p>Vous devez ajouter une photo pour accéder à l'événement</p>
+              {eventDetails && user && eventDetails.id_utilisateur === user.uid && (
+                <div>
+                <div className="description">
+                <p>En tant que créateur, vous pouvez supprimer l'événement</p>
+                <DeleteForeverIcon onClick={handleDeleteEvent} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
               </div>
+              
+              </div>
+            )}
               <div className="description">
                 <p style={{ color: "#FFF" }}>
                   Temps restant : {countdown.days}j {countdown.hours}h{" "}

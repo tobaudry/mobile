@@ -117,6 +117,7 @@ function Amis() {
     });
   }, [uid]);
 
+
   const handleFriendToggle = (uid) => {
     if (friends.includes(uid)) {
       setFriends(friends.filter((friendUid) => friendUid !== uid));
@@ -136,6 +137,17 @@ function Amis() {
       console.log("Invitation envoyée avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation :", error.message);
+    }
+  };
+  const confirmRemoveFriend = (uid, friendUid) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet ami ?")) {
+      removeFriend(uid, friendUid);
+    }
+  };
+
+  const confirmRemoveInvitation = (invitationUid) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette invitation ?")) {
+      removeInvitation(invitationUid);
     }
   };
 
@@ -231,9 +243,7 @@ function Amis() {
                       Accepter
                     </button>
                     <button
-                      onClick={() => {
-                        removeInvitation(uid);
-                      }}
+                      onClick={() => confirmRemoveInvitation(invitation.uid)}
                       style={{
                         color: "red",
                         border: "1px solid red",
@@ -311,7 +321,7 @@ function Amis() {
                   </div>
                   <div className="right">
                     <button
-                      onClick={() => removeFriend(uid, amis[index])}
+                      onClick={() => confirmRemoveFriend(uid, amis[index])}
                       style={{ border: "none" }}
                     >
                       {isFriend(amis[index]) ? (
