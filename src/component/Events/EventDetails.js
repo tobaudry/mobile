@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {  database } from "../../firebase-config";
-import { ref, onValue, set, remove } from "firebase/database"; 
-import { readAllPhotos } from "./Files";
+import { database } from "../../firebase-config";
+import { ref, onValue, remove,set } from "firebase/database";
+import { readAllPhotos, handleDeletePics } from "./Files";
 import { useParams, useNavigate } from "react-router-dom";
 import useAuthState from "../Fonctions/UseAuthState";
 import HeaderReturnFav from "../Elements/HeaderReturnFav";
-import { update } from "firebase/database";
-import afficherLoader from "../Fonctions/Loader";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PhotoIcon from '@mui/icons-material/Photo';
 import "./EventDetails.css";
@@ -31,18 +29,18 @@ function EventDetails() {
   useEffect(() => {
     async function fetchEventData() {
       try {
-        setLoading(true); // Set loading to true before fetching data
+        setLoading(true);
         const folderPath = `events/${eventId}`;
         const urls = await readAllPhotos(folderPath);
         urls.sort((a, b) => b.createdAt - a.createdAt);
         setPhotoURLs(urls);
-        setLoading(false); // Set loading to false after fetching data
+        setLoading(false);
       } catch (error) {
         console.error(
           "Une erreur s'est produite lors de la récupération des photos :",
           error
         );
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false);
       }
     }
 
@@ -147,6 +145,7 @@ function EventDetails() {
       currentDateOnly.getFullYear() === eventEndDateOnly.getFullYear() &&
       (currentHours < endHours ||
         (currentHours === endHours && currentMinutes <= endMinutes)));
+
   if (!isAfterStartTime) {
     startCountdown(fullEventDate);
   } else if (isAfterStartTime) {
@@ -158,12 +157,8 @@ function EventDetails() {
       const userUid = user.uid;
       const isFavorited = favoritedUsers.includes(userUid);
 
-      // Update the database with the updated list of favorited users
-      update(ref(database, `events/${eventId}/favorites`), {
-        [userUid]: !isFavorited, // Toggle the favorite status
-      })
+      ref(database, `events/${eventId}/favorites/${userUid}`).set(!isFavorited)
         .then(() => {
-          // Update favoritedUsers state based on whether the user has already favorited the event
           setFavoritedUsers((prevFavoritedUsers) => {
             if (isFavorited) {
               return prevFavoritedUsers.filter((uid) => uid !== userUid);
@@ -195,7 +190,6 @@ function EventDetails() {
       const userUid = user.uid;
       const photoRef = ref(database, `events/${eventId}/Cover/${userUid}`);
 
-      // Ajout de l'URL de l'image à la base de données de l'utilisateur
       set(photoRef, popupImage)
         .then(() => {
           console.log(
@@ -210,14 +204,14 @@ function EventDetails() {
         });
     }
   };
+
   const handleDeleteEvent = () => {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
     if (confirmDelete) {
-      // Supprimer l'événement de la base de données
       remove(ref(database, `events/${eventId}`))
         .then(() => {
           console.log("L'événement a été supprimé avec succès.");
-          navigate("/events"); // Rediriger vers une autre page après la suppression
+          navigate("/events"); 
         })
         .catch((error) => {
           console.error("Erreur lors de la suppression de l'événement :", error);
@@ -225,13 +219,14 @@ function EventDetails() {
     }
   };
 
+
   if (loading) {
-    return <div>{afficherLoader()}</div>; // Display loading indicator while loading
+    return <div>Chargement...</div>; 
   }
 
   if (eventDetails) {
     return (
-      <div >
+      <div>
         <HeaderReturnFav
           text={eventDetails.title}
           isFavorited={
@@ -241,7 +236,6 @@ function EventDetails() {
           handleToggleFavorite={handleToggleFavorite}
         />
         <div className="EventDetails">
-          {/* Evenement pas commencé  */}
           {!isAfterStartTime && (
             <div>
               <div className="description">
@@ -249,8 +243,8 @@ function EventDetails() {
                   L'événement n'a pas encore commencé
                 </p>
               </div>
-              <div class="countdown-container">
-                <div class="countdown">
+              <div className="countdown-container">
+                <div className="countdown">
                   <ul>
                     <li>
                       <span>{countdown.days}</span>Jours
@@ -269,18 +263,16 @@ function EventDetails() {
               </div>
             </div>
           )}
-          {/* Evenemnt en cours  */}
           {isBeforeEndTime && isAfterStartTime ? (
             <div>
               {eventDetails && user && eventDetails.id_utilisateur === user.uid && (
                 <div>
-                <div className="description">
-                <p>En tant que créateur, vous pouvez supprimer l'événement</p>
-                <DeleteForeverIcon onClick={handleDeleteEvent} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
-              </div>
-              
-              </div>
-            )}
+                  <div className="description">
+                    <p>En tant que créateur, vous pouvez supprimer l'événement</p>
+                    <DeleteForeverIcon onClick={handleDeleteEvent} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
+                  </div>
+                </div>
+              )}
               <div className="description">
                 <p style={{ color: "#FFF" }}>
                   Temps restant : {countdown.days}j {countdown.hours}h{" "}
@@ -300,7 +292,6 @@ function EventDetails() {
               </div>
             </div>
           ) : null}
-          {/* Evenemnt fini  */}
           {!isBeforeEndTime && isAfterStartTime ? (
             <div>
               <div className="description">
@@ -330,10 +321,17 @@ function EventDetails() {
         {popupImage && (
           <div className="popup" onClick={closePopup}>
             <div className="popup-inner">
+              {eventDetails && user && eventDetails.id_utilisateur === user.uid && (
+                <div>
+                  <div className="description">
+                    <p>En tant que créateur, vous pouvez supprimer la photo</p>
+                    <DeleteForeverIcon onClick={() => handleDeletePics(eventId, popupImage)} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
+                  </div>
+                </div>
+              )}
               <img src={popupImage} alt="Popup" />
               <div className="popup-content" style={{ paddingTop: "20px", justifyContent:"flex-end"}}>
                 <div className="ChangePic" style={{width:"100%",justifyContent:"flex-end", border:"none" }}>
-                  {/* Ajout du bouton pour choisir comme photo principale */}
                   <button onClick={handleChooseMainPhoto} style={{display:"flex", alignItems:"center", gap:"10px"}}>
                     <p style={{margin:"Opx"}}>Choisir comme photo principale</p>
                     <PhotoIcon/>

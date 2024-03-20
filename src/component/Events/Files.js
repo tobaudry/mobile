@@ -7,6 +7,7 @@ import {
   deleteObject,
   getMetadata,
 } from "firebase/storage";
+
 import { storage } from "../../firebase-storage";
 
 async function addFile(id, name) {
@@ -51,6 +52,23 @@ async function deleteFolder(id, uid) {
   }
 }
 
+async function  handleDeletePics (eventId,photoURL) {
+  console.log(eventId)
+  const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?");
+  if (confirmDelete) {
+    try {
+      const fileName = photoURL.split('%2F').pop().split('?')[0];
+      const storagePath = `events/${eventId}/${fileName}`;
+      const storageRef = ref(storage, storagePath);
+      await deleteObject(storageRef);
+      window.location.reload();
+      console.log("La photo a été supprimée avec succès.");
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la photo :", error);
+    }
+  }
+};
+
 async function readAllPhotos(folderPath) {
   try {
     const folderRef = ref(storage, folderPath);
@@ -80,4 +98,4 @@ async function readAllPhotos(folderPath) {
 }
 
 
-export { addFile, readAllPhotos, addProfilPic, deleteFolder };
+export { addFile, readAllPhotos, addProfilPic, deleteFolder, handleDeletePics };
