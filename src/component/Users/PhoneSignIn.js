@@ -131,14 +131,18 @@ function PhoneSignIn() {
               <div className="left">
                 <div className="InputCode">
                   {verificationCode.map((value, index) => (
-                    <input
-                      key={index}
-                      ref={(el) => (inputRefs.current[index] = el)}
-                      type="text"
-                      maxLength={1}
-                      value={value}
-                      onChange={(e) => handleCodeChange(index, e.target.value)}
-                      style={{ touchAction: "manipulation" }} // Ajout de la propriété CSS
+                   <input
+                        key={index}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                        type="text"
+                        maxLength={1}
+                        value={value}
+                        onChange={(e) => handleCodeChange(index, e.target.value)}
+                        style={{
+                            touchAction: "manipulation",
+                            userSelect: "none", // Désactive la sélection de texte
+                        }}
+                        inputMode="numeric" // Ouvre le clavier avec les chiffres
                     />
                   ))}
                 </div>
