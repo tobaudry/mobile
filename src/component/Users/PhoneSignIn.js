@@ -18,8 +18,8 @@ function PhoneSignIn() {
   ]);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
-  const [loading, setLoading] = useState(false); // Pour l'envoi du code
-  const [verifying, setVerifying] = useState(false); // Pour la vérification du code
+  const [loading, setLoading] = useState(false); 
+  const [verifying, setVerifying] = useState(false); 
   const navigation = useNavigate();
   const inputRefs = useRef([]);
 
@@ -33,20 +33,8 @@ function PhoneSignIn() {
     return () => unsubscribe();
   }, [navigation]);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://www.google.com/recaptcha/enterprise.js?render=YOUR_RECAPTCHA_KEY";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   const sendCode = async () => {
-    setLoading(true); // Activer le chargement
+    setLoading(true); 
     try {
       const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {
         size: "invisible",
@@ -57,7 +45,7 @@ function PhoneSignIn() {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false); // Désactiver le chargement
+      setLoading(false); 
     }
   };
 
