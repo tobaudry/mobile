@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { database } from "../../firebase-config";
-import { ref, onValue, remove,set } from "firebase/database";
+import { ref, onValue, remove,set, update } from "firebase/database";
 import { readAllPhotos, handleDeletePics } from "./Files";
 import { useParams, useNavigate } from "react-router-dom";
 import useAuthState from "../Fonctions/UseAuthState";
@@ -157,8 +157,12 @@ function EventDetails() {
       const userUid = user.uid;
       const isFavorited = favoritedUsers.includes(userUid);
 
-      ref(database, `events/${eventId}/favorites/${userUid}`).set(!isFavorited)
+      // Update the database with the updated list of favorited users
+      update(ref(database, `events/${eventId}/favorites`), {
+        [userUid]: !isFavorited, // Toggle the favorite status
+      })
         .then(() => {
+          // Update favoritedUsers state based on whether the user has already favorited the event
           setFavoritedUsers((prevFavoritedUsers) => {
             if (isFavorited) {
               return prevFavoritedUsers.filter((uid) => uid !== userUid);
@@ -172,6 +176,7 @@ function EventDetails() {
         });
     }
   };
+
 
   const handleTakePicture = () => {
     navigate(`/TakePicture/${eventId}`);

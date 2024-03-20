@@ -18,7 +18,11 @@ function PhoneSignIn() {
   ]);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [loading, setLoading] = useState(false); // Pour l'envoi du code
+  const [verifying, setVerifying] = useState(false); // Pour la vérification du code
   const navigation = useNavigate();
+  const inputRefs = useRef([]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -28,6 +32,7 @@ function PhoneSignIn() {
 
     return () => unsubscribe();
   }, [navigation]);
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -41,7 +46,7 @@ function PhoneSignIn() {
   }, []);
 
   const sendCode = async () => {
-    console.log();
+    setLoading(true); // Activer le chargement
     try {
       const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {
         size: "invisible",
@@ -51,6 +56,8 @@ function PhoneSignIn() {
       setShowVerificationPopup(true);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false); // Désactiver le chargement
     }
   };
 
@@ -64,12 +71,12 @@ function PhoneSignIn() {
     }
 
     if (index === 5 && value !== "") {
-      console.log(newCode);
       verifyCode(newCode.join(""));
     }
   };
 
   const verifyCode = async (code) => {
+    setVerifying(true); // Activer le chargement de vérification
     try {
       await confirmationResult.confirm(code);
       navigation("/setusername", {
@@ -77,10 +84,11 @@ function PhoneSignIn() {
       });
     } catch (err) {
       console.error(err);
+    } finally {
+      setVerifying(false); // Désactiver le chargement de vérification
     }
   };
 
-  const inputRefs = useRef([]);
   useEffect(() => {
     inputRefs.current = inputRefs.current
       .slice(0, 6)
@@ -102,7 +110,9 @@ function PhoneSignIn() {
               />
             </div>
             <div className="InvitUsers">
-              <button onClick={sendCode}>Envoyer le code</button>
+              <button onClick={sendCode} disabled={loading}>
+                {loading ? 'Envoi en cours...' : 'Envoyer le code'}
+              </button>
             </div>
           </div>
         </div>
@@ -136,6 +146,7 @@ function PhoneSignIn() {
             </div>
           </div>
         )}
+        {verifying && <div>Chargement en cours...</div>} {/* Loader de vérification */}
       </div>
     </div>
   );

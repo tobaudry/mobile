@@ -93,9 +93,6 @@ export default function TakePicture() {
       setCameraActive(true);
     }, 'image/jpeg');
   };
-  
-  
-  
 
   const handleToggleFlash = () => {
     setFlash(prevFlash => !prevFlash);
@@ -125,7 +122,7 @@ export default function TakePicture() {
             <LoopIcon onClick={handleToggleCamera}/>
           </div>
         </div>
-        <h2>v1</h2>
+        <h2>Take A picture</h2>
       </div>
 
       {cameraActive && (

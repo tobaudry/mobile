@@ -4,6 +4,10 @@ body {
   width: 100%;
 
 }
+input {
+  user-select: none;
+  user-zoom: none;
+}
 h2 {
   /* width: 315px; */
   color: #FFF;
