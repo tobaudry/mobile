@@ -8,6 +8,7 @@ import HeaderReturnFav from "../Elements/HeaderReturnFav";
 import { update } from "firebase/database";
 import afficherLoader from "../Fonctions/Loader";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import PhotoIcon from '@mui/icons-material/Photo';
 import "./EventDetails.css";
 
 function EventDetails() {
@@ -93,6 +94,20 @@ function EventDetails() {
   const { date, startTime, endDate, endTime } = eventDetails;
   const eventDate = new Date(date);
   const eventEndDate = new Date(endDate);
+  const fullEventDate = new Date(
+    eventDate.getFullYear(),
+    eventDate.getMonth(),
+    eventDate.getDate(),
+    parseInt(startTime.split(":")[0]),  
+    parseInt(startTime.split(":")[1])   
+  );
+  const fullEndDate = new Date(
+    eventEndDate.getFullYear(),
+    eventEndDate.getMonth(),
+    eventEndDate.getDate(),
+    parseInt(endTime.split(":")[0]),  
+    parseInt(endTime.split(":")[1])   
+  );
   const currentDateOnly = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
@@ -133,9 +148,9 @@ function EventDetails() {
       (currentHours < endHours ||
         (currentHours === endHours && currentMinutes <= endMinutes)));
   if (!isAfterStartTime) {
-    startCountdown(eventDateOnly);
+    startCountdown(fullEventDate);
   } else if (isAfterStartTime) {
-    startCountdown(eventEndDate);
+    startCountdown(fullEndDate);
   }
 
   const handleToggleFavorite = () => {
@@ -202,7 +217,7 @@ function EventDetails() {
       remove(ref(database, `events/${eventId}`))
         .then(() => {
           console.log("L'événement a été supprimé avec succès.");
-          navigate("/"); // Rediriger vers une autre page après la suppression
+          navigate("/events"); // Rediriger vers une autre page après la suppression
         })
         .catch((error) => {
           console.error("Erreur lors de la suppression de l'événement :", error);
@@ -316,11 +331,12 @@ function EventDetails() {
           <div className="popup" onClick={closePopup}>
             <div className="popup-inner">
               <img src={popupImage} alt="Popup" />
-              <div className="popup-content" style={{ paddingTop: "20px" }}>
-                <div className="ChangePic">
+              <div className="popup-content" style={{ paddingTop: "20px", justifyContent:"flex-end"}}>
+                <div className="ChangePic" style={{width:"100%",justifyContent:"flex-end", border:"none" }}>
                   {/* Ajout du bouton pour choisir comme photo principale */}
-                  <button onClick={handleChooseMainPhoto}>
-                    choisir comme photo principale
+                  <button onClick={handleChooseMainPhoto} style={{display:"flex", alignItems:"center", gap:"10px"}}>
+                    <p style={{margin:"Opx"}}>Choisir comme photo principale</p>
+                    <PhotoIcon/>
                   </button>
                 </div>
               </div>
