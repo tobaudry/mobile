@@ -9,17 +9,6 @@ import BackspaceIcon from "@mui/icons-material/Backspace";
 
 function PhoneSignIn() {
   const [phone, setPhone] = useState("+33");
-  const [phoneNumber, setPhoneNumber] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
   const [verificationCode, setVerificationCode] = useState([
     "",
     "",
@@ -32,7 +21,7 @@ function PhoneSignIn() {
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [showCustomKeyboard, setShowCustomKeyboard] = useState(true);
+  const [showCustomKeyboard] = useState(true);
   const navigation = useNavigate();
   const inputRefs = useRef([]);
 
