@@ -11,6 +11,7 @@ function Amis() {
   const user = useAuthState();
   const uid = user ? user.uid : null;
   const userData = useUserData(uid);
+
   const [amis, setAmis] = useState([]);
   const [friendsUsernames, setFriendsUsernames] = useState([]);
   const [friendsPics, setfriendsPics] = useState([]);
@@ -132,8 +133,7 @@ function Amis() {
         sender: uid,
         receiver: invitedUid,
       });
-      // Rediriger vers la même URL pour "recharger" la page
-      window.location.replace(window.location.href);
+      window.location.reload();
       console.log("Invitation envoyée avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation :", error.message);
