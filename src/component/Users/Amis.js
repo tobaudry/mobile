@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { database } from "../../firebase-config";
 import { ref, onValue, set, remove, get } from "firebase/database";
 import useAuthState from "../Fonctions/UseAuthState";
@@ -11,6 +13,7 @@ function Amis() {
   const user = useAuthState();
   const uid = user ? user.uid : null;
   const userData = useUserData(uid);
+  const navigation = useNavigate();
 
   const [amis, setAmis] = useState([]);
   const [friendsUsernames, setFriendsUsernames] = useState([]);
@@ -133,7 +136,8 @@ function Amis() {
         sender: uid,
         receiver: invitedUid,
       });
-      window.location.reload();
+      setSearchTerm("");
+      navigation("/amis");
       console.log("Invitation envoyée avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation :", error.message);
