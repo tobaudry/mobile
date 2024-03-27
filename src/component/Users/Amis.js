@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { database } from "../../firebase-config";
 import { ref, onValue, set, remove, get } from "firebase/database";
 import useAuthState from "../Fonctions/UseAuthState";
@@ -11,6 +12,7 @@ function Amis() {
   const user = useAuthState();
   const uid = user ? user.uid : null;
   const userData = useUserData(uid);
+  const navigation = useNavigate();
 
   const [amis, setAmis] = useState([]);
   const [friendsUsernames, setFriendsUsernames] = useState([]);
@@ -72,6 +74,7 @@ function Amis() {
       }
     });
   }, [uid]);
+
   useEffect(() => {
     const invitationsRef = ref(database, `invitations`);
     onValue(invitationsRef, async (snapshot) => {
@@ -117,7 +120,6 @@ function Amis() {
     });
   }, [uid]);
 
-
   const handleFriendToggle = (uid) => {
     if (friends.includes(uid)) {
       setFriends(friends.filter((friendUid) => friendUid !== uid));
@@ -133,7 +135,8 @@ function Amis() {
         sender: uid,
         receiver: invitedUid,
       });
-      window.location.reload();
+      // Rediriger vers la même URL pour "recharger" la page
+      window.location.href = window.location.href;
       console.log("Invitation envoyée avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation :", error.message);
@@ -146,7 +149,9 @@ function Amis() {
   };
 
   const confirmRemoveInvitation = (invitationUid) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette invitation ?")) {
+    if (
+      window.confirm("Êtes-vous sûr de vouloir supprimer cette invitation ?")
+    ) {
       removeInvitation(invitationUid);
     }
   };
@@ -206,7 +211,7 @@ function Amis() {
   };
 
   return (
-    <div className="App" style={{position:"fixed", width:"100%"}}>
+    <div className="App" style={{ position: "fixed", width: "100%" }}>
       <HeaderReturn text="Ajouter des amis" />
       {showInvitations && userData && senderUserData ? (
         <div>
@@ -223,10 +228,7 @@ function Amis() {
                   <div class="left">
                     {/* Affichage de l'username et de la photo de profil de l'utilisateur envoyant l'invitation */}
                     <div className="iconFriends">
-                      <img
-                        src={senderUserData.photoUrl}
-                        alt="Profil"
-                      />
+                      <img src={senderUserData.photoUrl} alt="Profil" />
                     </div>
                     <p style={{ paddingLeft: "20px" }}>
                       {senderUserData.username}
@@ -238,8 +240,7 @@ function Amis() {
                         addFriend(invitation.sender, uid);
                         addFriend(uid, invitation.sender);
                         removeInvitation(uid);
-                      }}
-                    >
+                      }}>
                       Accepter
                     </button>
                     <button
@@ -248,8 +249,7 @@ function Amis() {
                         color: "red",
                         border: "1px solid red",
                         marginLeft: "20px",
-                      }}
-                    >
+                      }}>
                       x
                     </button>
                   </div>
@@ -282,8 +282,7 @@ function Amis() {
                   className="InvitUsers"
                   style={{
                     paddingBottom: "10px",
-                  }}
-                >
+                  }}>
                   <div className="left">
                     <label>{user.username}</label>
                   </div>
@@ -322,8 +321,7 @@ function Amis() {
                   <div className="right">
                     <button
                       onClick={() => confirmRemoveFriend(uid, amis[index])}
-                      style={{ border: "none" }}
-                    >
+                      style={{ border: "none" }}>
                       {isFriend(amis[index]) ? (
                         <DeleteOutlineIcon />
                       ) : (
