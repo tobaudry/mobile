@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { database } from "../../firebase-config";
-import { ref, onValue, remove,set, update } from "firebase/database";
+import { ref, onValue, remove, set, update } from "firebase/database";
 import { readAllPhotos, handleDeletePics } from "./Files";
 import { useParams, useNavigate } from "react-router-dom";
 import useAuthState from "../Fonctions/UseAuthState";
 import HeaderReturnFav from "../Elements/HeaderReturnFav";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import PhotoIcon from '@mui/icons-material/Photo';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import PhotoIcon from "@mui/icons-material/Photo";
 import "./EventDetails.css";
 
 function EventDetails() {
@@ -96,15 +96,15 @@ function EventDetails() {
     eventDate.getFullYear(),
     eventDate.getMonth(),
     eventDate.getDate(),
-    parseInt(startTime.split(":")[0]),  
-    parseInt(startTime.split(":")[1])   
+    parseInt(startTime.split(":")[0]),
+    parseInt(startTime.split(":")[1])
   );
   const fullEndDate = new Date(
     eventEndDate.getFullYear(),
     eventEndDate.getMonth(),
     eventEndDate.getDate(),
-    parseInt(endTime.split(":")[0]),  
-    parseInt(endTime.split(":")[1])   
+    parseInt(endTime.split(":")[0]),
+    parseInt(endTime.split(":")[1])
   );
   const currentDateOnly = new Date(
     currentDate.getFullYear(),
@@ -177,7 +177,6 @@ function EventDetails() {
     }
   };
 
-
   const handleTakePicture = () => {
     navigate(`/TakePicture/${eventId}`);
   };
@@ -211,22 +210,26 @@ function EventDetails() {
   };
 
   const handleDeleteEvent = () => {
-    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
+    const confirmDelete = window.confirm(
+      "Êtes-vous sûr de vouloir supprimer cet événement ?"
+    );
     if (confirmDelete) {
       remove(ref(database, `events/${eventId}`))
         .then(() => {
           console.log("L'événement a été supprimé avec succès.");
-          navigate("/events"); 
+          navigate("/events");
         })
         .catch((error) => {
-          console.error("Erreur lors de la suppression de l'événement :", error);
+          console.error(
+            "Erreur lors de la suppression de l'événement :",
+            error
+          );
         });
     }
   };
 
-
   if (loading) {
-    return <div>Chargement...</div>; 
+    return <div>Chargement...</div>;
   }
 
   if (eventDetails) {
@@ -270,14 +273,25 @@ function EventDetails() {
           )}
           {isBeforeEndTime && isAfterStartTime ? (
             <div>
-              {eventDetails && user && eventDetails.id_utilisateur === user.uid && (
-                <div>
-                  <div className="description">
-                    <p>En tant que créateur, vous pouvez supprimer l'événement</p>
-                    <DeleteForeverIcon onClick={handleDeleteEvent} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
+              {eventDetails &&
+                user &&
+                eventDetails.id_utilisateur === user.uid && (
+                  <div>
+                    <div className="description">
+                      <p>
+                        En tant que créateur, vous pouvez supprimer l'événement
+                      </p>
+                      <DeleteForeverIcon
+                        onClick={handleDeleteEvent}
+                        style={{
+                          cursor: "pointer",
+                          paddingBottom: "10px",
+                          paddingTop: "10px",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               <div className="description">
                 <p style={{ color: "#FFF" }}>
                   Temps restant : {countdown.days}j {countdown.hours}h{" "}
@@ -326,20 +340,50 @@ function EventDetails() {
         {popupImage && (
           <div className="popup" onClick={closePopup}>
             <div className="popup-inner">
-              {eventDetails && user && eventDetails.id_utilisateur === user.uid && (
-                <div>
-                  <div className="description">
-                    <p>En tant que créateur, vous pouvez supprimer la photo</p>
-                    <DeleteForeverIcon onClick={() => handleDeletePics(eventId, popupImage)} style={{ cursor: "pointer", paddingBottom:"10px", paddingTop:"10px" }} />
+              {eventDetails &&
+                user &&
+                eventDetails.id_utilisateur === user.uid && (
+                  <div>
+                    <div className="description">
+                      <p>
+                        En tant que créateur, vous pouvez supprimer la photo
+                      </p>
+                      <DeleteForeverIcon
+                        onClick={() => {
+                          handleDeletePics(eventId, popupImage);
+                          window.location.reload();
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          paddingBottom: "10px",
+                          paddingTop: "10px",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               <img src={popupImage} alt="Popup" />
-              <div className="popup-content" style={{ paddingTop: "20px", justifyContent:"flex-end"}}>
-                <div className="ChangePic" style={{width:"100%",justifyContent:"flex-end", border:"none" }}>
-                  <button onClick={handleChooseMainPhoto} style={{display:"flex", alignItems:"center", gap:"10px"}}>
-                    <p style={{margin:"Opx"}}>Choisir comme photo principale</p>
-                    <PhotoIcon/>
+              <div
+                className="popup-content"
+                style={{ paddingTop: "20px", justifyContent: "flex-end" }}>
+                <div
+                  className="ChangePic"
+                  style={{
+                    width: "100%",
+                    justifyContent: "flex-end",
+                    border: "none",
+                  }}>
+                  <button
+                    onClick={handleChooseMainPhoto}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}>
+                    <p style={{ margin: "Opx" }}>
+                      Choisir comme photo principale
+                    </p>
+                    <PhotoIcon />
                   </button>
                 </div>
               </div>

@@ -1,10 +1,9 @@
 .fixed {
-  position:fixed;
+  position: fixed;
   background-color: #121212;
-  width:100%;
+  width: 100%;
 }
 .ScrollFriends {
-  
   padding-top: 635px;
 }
 .ami-image {
@@ -28,17 +27,18 @@ label {
 }
 .SelectFriends {
   padding: 0px 20px 0px 20px;
-  padding-top: 550px;}
+  padding-top: 550px;
+}
 
 .left-friends {
   display: flex;
   align-items: center;
 }
 input[type="checkbox"]:checked + .ami-image {
-  border-color: green; /* Changement de couleur de la bordure */
+  border-color: green;
 }
 input[type="checkbox"]:checked + .ami-image + label {
-  color: green; /* Changement de couleur du label */
+  color: green;
 }
 .input-date input[type="date"]::-webkit-calendar-picker-indicator,
 .input-date input[type="time"]::-webkit-calendar-picker-indicator {
@@ -47,17 +47,16 @@ input[type="checkbox"]:checked + .ami-image + label {
 
 .input-date {
   display: flex;
-  position: relative; /* Ajout pour positionner correctement le paragraphe */
+  position: relative;
 }
 
 .input-date input {
   font-size: 12px;
   border-radius: 30px;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   background-color: transparent;
-  color: rgba(255, 255, 255, 0.30);
+  color: rgba(255, 255, 255, 0.3);
   opacity: 0.7;
   text-align: center;
   padding: 3px;
 }
-

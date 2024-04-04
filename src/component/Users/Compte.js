@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {  database } from "../../firebase-config";
+import { database } from "../../firebase-config";
 import useAuthState from "../Fonctions/UseAuthState";
 import useUserData from "../Fonctions/UserData";
 import HeaderPics from "../Elements/HeaderPics";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import PersonIcon from "@mui/icons-material/Person";
-import {
-  update,
-  ref,
-  get,
-  child,
-  
-} from "firebase/database";
+import { update, ref, get, child } from "firebase/database";
 
 import "./Compte.css";
 
@@ -37,7 +31,11 @@ function Compte() {
     setNewUsername(e.target.value.trim());
   };
   const confirmUpdateUsername = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir changer votre nom d'utilisateur ?")) {
+    if (
+      window.confirm(
+        "Êtes-vous sûr de vouloir changer votre nom d'utilisateur ?"
+      )
+    ) {
       handleUpdateUsername();
     }
   };
@@ -58,7 +56,7 @@ function Compte() {
             if (userData.username === newUsername) {
               setError("Ce nom d'utilisateur est déjà pris.");
               isUsernameAvailable = false;
-              return; // Sortir de la boucle forEach si l'utilisateur est trouvé
+              return;
             }
           });
 
@@ -89,7 +87,7 @@ function Compte() {
   };
 
   return (
-    <div className="App" style={{position:"fixed", width:"100%"}}>
+    <div className="App" style={{ position: "fixed", width: "100%" }}>
       <HeaderPics text="Ton compte" />
 
       <div className="description">
@@ -123,8 +121,7 @@ function Compte() {
                       fontStyle: "normal",
                       fontWeight: "600",
                       lineHeight: "normal",
-                    }}
-                  >
+                    }}>
                     Ici, tu peux modifier ton nom d'utilisateur
                   </p>
                 </div>
@@ -139,10 +136,9 @@ function Compte() {
                     />
                   </div>
                   <div className="InvitUsers">
-                  <button
-                    onClick={confirmUpdateUsername}
-                    disabled={isButtonDisabled}
-                  >
+                    <button
+                      onClick={confirmUpdateUsername}
+                      disabled={isButtonDisabled}>
                       changer
                     </button>
                   </div>

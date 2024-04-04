@@ -9,7 +9,7 @@ import PhotoIcon from "@mui/icons-material/Photo";
 import { storage, auth } from "../../firebase-config";
 import { listAll, getDownloadURL, ref, deleteObject } from "firebase/storage";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import { addProfilPic  } from "../Events/Files";
+import { addProfilPic } from "../Events/Files";
 import { addProfilPicUrl } from "../Fonctions/UserUrl";
 import "../Users/Compte.css";
 
@@ -20,7 +20,8 @@ export default function HeaderPics({ text, url }) {
   const userData = useUserData(uid);
   const [ProfilPic, setProfilPic] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null); // Pour stocker l'image sélectionnée
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [reloadPage, setReloadPage] = useState(false); // State pour recharger la page
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -88,10 +89,11 @@ export default function HeaderPics({ text, url }) {
         .then(() => {
           addProfilPic(uid, ProfilPic)
             .then(() => {
-              resolve(); // Résout la promesse une fois que l'image est téléchargée avec succès
+              resolve();
+              setReloadPage(true); // Déclenche le rechargement de la page
             })
             .catch((error) => {
-              reject(error); // Rejette la promesse en cas d'erreur lors du téléchargement de l'image
+              reject(error);
             });
         })
         .catch((error) => {
@@ -104,12 +106,10 @@ export default function HeaderPics({ text, url }) {
   const handleImageValidation = () => {
     handleUpload()
       .then(() => {
-        closePopup(); // Ferme le pop-up une fois que l'image est téléchargée avec succès
-        window.location.reload(); // Rafraîchit la page
+        closePopup();
       })
       .catch((error) => {
         console.error("Error handling image upload:", error);
-        // Gérer les erreurs éventuelles ici
       });
   };
 
@@ -133,6 +133,13 @@ export default function HeaderPics({ text, url }) {
       setShowPopup(false); // Fermer le pop-up si l'utilisateur clique en dehors des éléments cliquables
     }
   };
+
+  useEffect(() => {
+    if (reloadPage) {
+      setReloadPage(false); // Réinitialise le state pour éviter une boucle infinie
+      window.location.reload();
+    }
+  }, [reloadPage]);
 
   return (
     <div className="HeadEvent">
@@ -164,8 +171,7 @@ export default function HeaderPics({ text, url }) {
                   className="ProfilPic"
                   style={{
                     marginBottom: "40px",
-                  }}
-                >
+                  }}>
                   <img src={userData.photoUrl} alt={`Profil pics`} />
                 </div>
                 <div className="ChangePic">

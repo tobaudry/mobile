@@ -14,38 +14,36 @@
 }
 
 .InputCode input {
-  width: 30px; /* Ajustez la taille selon vos besoins */
-  height: 30px; /* Ajustez la taille selon vos besoins */
-  margin-right: 10px; /* Espace entre les carrés */
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
-.data {
-  margin-top: 20%;
-}
+
 .LogOut button {
   width: 232px;
   height: 54px;
   border-radius: 30px;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   background-color: transparent;
-  color: #FFF;
+  color: #fff;
 }
 
 .LogOut {
-  position: fixed; 
-  left: 50%; 
-  transform: translateX(-50%); 
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 50px;
 }
 .InputTextUsername {
   padding: 20px 20px 20px 20px;
 }
-.InputTextUsername input{
+.InputTextUsername input {
   width: 90%;
   height: 30px;
   border-radius: 30px;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   background-color: transparent;
-  color: #FFF;
+  color: #fff;
   padding: 0px 20px 0px 20px;
 }
 .rc-imageselect-challenge {

@@ -10,6 +10,7 @@ const useInvitationCount = () => {
 
   useEffect(() => {
     if (uid) {
+      console.log(uid);
       const invitationsRef = ref(database, `invitations`);
       onValue(invitationsRef, (snapshot) => {
         const invitationsData = snapshot.val();

@@ -69,9 +69,7 @@ function SetUsername() {
         <h2>Vous y êtes presque</h2>
         {user ? <p></p> : <p>Aucun utilisateur connecté</p>}
       </div>
-      {/* <div className="LogOut">
-          <button onClick={handleSignOut}>Abandonner</button>
-        </div>{" "} */}
+
       <div class="description">
         <p>Choisissez votre nom d'utilisateur : </p>
       </div>

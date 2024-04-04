@@ -8,7 +8,7 @@ import FlashOnIcon from "@mui/icons-material/FlashOn";
 import FlashOffIcon from "@mui/icons-material/FlashOff";
 import LoopIcon from "@mui/icons-material/Loop";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import Webcam from 'react-webcam';
+import Webcam from "react-webcam";
 
 import "./TakePicture.css";
 
@@ -17,8 +17,8 @@ export default function TakePicture() {
   const { eventId } = useParams();
   const [cameraActive, setCameraActive] = useState(true);
   const [flash, setFlash] = useState(false);
-  const [facingMode, setFacingMode] = useState('environment');
-  const [showModal, setShowModal] = useState(false); // State for modal
+  const [facingMode, setFacingMode] = useState("environment");
+  const [showModal, setShowModal] = useState(false);
   const webcamRef = useRef(null);
 
   const handleEventClickNavigate = () => {
@@ -27,8 +27,8 @@ export default function TakePicture() {
 
   const handleSnapshot = async () => {
     setCameraActive(false);
-    if (facingMode === 'user' && flash) {
-      setShowModal(true); 
+    if (facingMode === "user" && flash) {
+      setShowModal(true);
       setTimeout(() => {
         setShowModal(false);
         captureImage();
@@ -42,28 +42,21 @@ export default function TakePicture() {
     const uid = uuidv4();
     const folderPath = `events/${eventId}/${uid}`;
     const imgRef = ref(storage, `${folderPath}.jpeg`);
-  
-    let imageSrc = await webcamRef.current.getScreenshot(); // Attendre la résolution de la promesse
-  
-    // Convertir l'URL de données en un fichier JPEG
+
+    let imageSrc = await webcamRef.current.getScreenshot();
     const response = await fetch(imageSrc);
     const blob = await response.blob();
-  
-    // Créer un objet Image à partir du blob
     const img = new Image();
     img.src = URL.createObjectURL(blob);
-  
-    // Attendre que l'image soit chargée
-    await new Promise(resolve => {
+
+    await new Promise((resolve) => {
       img.onload = resolve;
     });
-  
-    // Créer un canevas pour effectuer la transformation
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-  
-    // Retourner l'image horizontalement
-    if (facingMode === 'user') {
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (facingMode === "user") {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.translate(img.width, 0);
@@ -74,32 +67,29 @@ export default function TakePicture() {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
     }
-  
-    // Convertir le canevas en un blob JPEG
+
     canvas.toBlob(async (canvasBlob) => {
-      // Ajouter la date de création actuelle à chaque photo
       const createdAt = new Date().toISOString();
-  
-      // Ajouter la date de création à la métadonnée de l'image
+
       const metadata = {
-        contentType: 'image/jpeg',
+        contentType: "image/jpeg",
         customMetadata: {
-          createdAt: createdAt
-        }
+          createdAt: createdAt,
+        },
       };
-  
-      // Upload the image blob to Firebase Storage with metadata
+
       await uploadBytes(imgRef, canvasBlob, metadata);
+
       setCameraActive(true);
-    }, 'image/jpeg');
+    }, "image/jpeg");
   };
 
   const handleToggleFlash = () => {
-    setFlash(prevFlash => !prevFlash);
+    setFlash((prevFlash) => !prevFlash);
   };
 
   const handleToggleCamera = () => {
-    setFacingMode(prevMode => (prevMode === 'user' ? 'environment' : 'user'));
+    setFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
   };
 
   useEffect(() => {
@@ -109,7 +99,7 @@ export default function TakePicture() {
   }, [flash, showModal]);
 
   return (
-    <div style={{position:"fixed", width:"100%"}}>
+    <div style={{ position: "fixed", width: "100%" }}>
       <div className="HeadEvent">
         <div className="icon">
           <ArrowBackIosIcon onClick={handleEventClickNavigate} />
@@ -119,7 +109,7 @@ export default function TakePicture() {
             ) : (
               <FlashOffIcon onClick={handleToggleFlash} />
             )}
-            <LoopIcon onClick={handleToggleCamera}/>
+            <LoopIcon onClick={handleToggleCamera} />
           </div>
         </div>
         <h2>Take A picture</h2>
@@ -148,7 +138,7 @@ export default function TakePicture() {
           videoConstraints={{ facingMode: facingMode }}
           flash={flash}
           ref={webcamRef}
-          style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
+          style={{ transform: facingMode === "user" ? "scaleX(-1)" : "none" }}
         />
       </div>
     </div>

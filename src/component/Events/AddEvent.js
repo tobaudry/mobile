@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, push, set, onValue, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
-import {  database } from "../../firebase-config";
+import { database } from "../../firebase-config";
 import useAuthState from "../Fonctions/UseAuthState";
 import HeaderReturn from "../Elements/HeaderReturn";
 import "./AddEvent.css";
@@ -152,13 +152,6 @@ function AddEvent() {
       setTimeout(() => {
         setErrorInput("");
       }, 2000);
-
-      // setTitle("");
-      // setStartTime("");
-      // setDate("");
-      // setEndTime("");
-      // setEndDate("");
-      // setInvites([]);
     }
   };
 
@@ -256,8 +249,7 @@ function AddEvent() {
           <div>
             <div
               className="description"
-              style={{ padding: "20px 20px 20px 20px" }}
-            >
+              style={{ padding: "20px 20px 20px 20px" }}>
               <p style={{ color: "red" }}>{errorDate}</p>
             </div>
           </div>
@@ -279,8 +271,7 @@ function AddEvent() {
             <div
               class="left-friends"
               key={index}
-              onClick={() => handleInviteToggle(ami)}
-            >
+              onClick={() => handleInviteToggle(ami)}>
               <input type="checkbox" checked={invites.includes(ami)} />
               <img
                 src={friendsPics[index]}

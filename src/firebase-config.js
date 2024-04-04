@@ -39,4 +39,4 @@ export {
   orderByChild,
   onValue,
   equalTo,
-}; // Correction de l'exportation des fonctions
+};

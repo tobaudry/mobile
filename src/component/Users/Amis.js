@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { database } from "../../firebase-config";
-import { ref, onValue, set, remove, get } from "firebase/database";
+import { ref, onValue, push, set, remove, get } from "firebase/database";
 import useAuthState from "../Fonctions/UseAuthState";
 import useUserData from "../Fonctions/UserData";
 import HeaderReturn from "../Elements/HeaderReturn";
@@ -24,7 +24,7 @@ function Amis() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showInvitations, setShowInvitations] = useState(false);
-  const [senderUserData, setSenderUserData] = useState([]); // State pour les données de l'utilisateur envoyant l'invitation
+  const [senderUserData, setSenderUserData] = useState([]);
 
   useEffect(() => {
     if (uid) {
@@ -88,7 +88,6 @@ function Amis() {
         setInvitations(invitationsList);
         setShowInvitations(invitationsList.length > 0);
 
-        // Promesses pour récupérer les données de l'utilisateur envoyant l'invitation
         const promises = invitationsList.map((invitation) => {
           const senderUid = invitation.sender;
           const senderRef = ref(database, `users/${senderUid}`);
@@ -104,10 +103,7 @@ function Amis() {
 
         try {
           const senderDataArray = await Promise.all(promises);
-          // Mettre à jour les données de l'utilisateur envoyant l'invitation
-          senderDataArray.forEach((senderData) => {
-            setSenderUserData(senderData);
-          });
+          setSenderUserData(senderDataArray); // Mettre à jour l'état avec le tableau complet
         } catch (error) {
           console.error(
             "Erreur lors de la récupération des données de l'expéditeur :",
@@ -130,9 +126,9 @@ function Amis() {
   };
 
   const sendInvitation = async (invitedUid) => {
-    const invitationRef = ref(database, `invitations/${invitedUid}`);
+    const invitationRef = ref(database, `invitations`);
     try {
-      await set(invitationRef, {
+      await push(invitationRef, {
         sender: uid,
         receiver: invitedUid,
       });
@@ -143,25 +139,43 @@ function Amis() {
       console.error("Erreur lors de l'envoi de l'invitation :", error.message);
     }
   };
+
   const confirmRemoveFriend = (uid, friendUid) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cet ami ?")) {
       removeFriend(uid, friendUid);
     }
   };
 
-  const confirmRemoveInvitation = (invitationUid) => {
+  const confirmRemoveInvitation = (uid, senderUid) => {
     if (
       window.confirm("Êtes-vous sûr de vouloir supprimer cette invitation ?")
     ) {
-      removeInvitation(invitationUid);
+      removeInvitation(uid, senderUid);
     }
   };
 
-  const removeInvitation = async (invitationUid) => {
-    const invitationRef = ref(database, `invitations/${invitationUid}`);
+  const removeInvitation = async (uid, senderUid) => {
+    const invitationsRef = ref(database, `invitations`);
+    console.log(uid);
+    console.log(senderUid);
     try {
-      await remove(invitationRef);
-      console.log("Invitation supprimée avec succès !");
+      const snapshot = await get(invitationsRef);
+      const invitationsData = snapshot.val();
+
+      if (invitationsData) {
+        Object.keys(invitationsData).forEach(async (invitationUid) => {
+          const invitation = invitationsData[invitationUid];
+          if (invitation.receiver === uid && invitation.sender === senderUid) {
+            const invitationToRemoveRef = ref(
+              database,
+              `invitations/${invitationUid}`
+            );
+            await remove(invitationToRemoveRef);
+            console.log("Invitation supprimée avec succès !");
+            window.location.reload();
+          }
+        });
+      }
     } catch (error) {
       console.error(
         "Erreur lors de la suppression de l'invitation :",
@@ -174,7 +188,6 @@ function Amis() {
     try {
       const amisRef = ref(database, `users/${uid}/friends/${friendUid}`);
       await set(amisRef, friendUid);
-      window.location.reload();
       console.log("Ami ajouté avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'ami :", error.message);
@@ -187,7 +200,6 @@ function Amis() {
     try {
       await remove(amisRef);
       await remove(otherAmisRef);
-      window.location.reload();
       console.log("Ami supprimé avec succès !");
     } catch (error) {
       console.error("Erreur lors de la suppression de l'ami :", error.message);
@@ -227,12 +239,11 @@ function Amis() {
               <li key={index}>
                 <div className="InvitUsers">
                   <div class="left">
-                    {/* Affichage de l'username et de la photo de profil de l'utilisateur envoyant l'invitation */}
                     <div className="iconFriends">
-                      <img src={senderUserData.photoUrl} alt="Profil" />
+                      <img src={senderUserData[index].photoUrl} alt="Profil" />
                     </div>
                     <p style={{ paddingLeft: "20px" }}>
-                      {senderUserData.username}
+                      {senderUserData[index].username}
                     </p>
                   </div>
                   <div class="right">
@@ -240,12 +251,14 @@ function Amis() {
                       onClick={() => {
                         addFriend(invitation.sender, uid);
                         addFriend(uid, invitation.sender);
-                        removeInvitation(uid);
+                        confirmRemoveInvitation(uid, invitation.sender);
                       }}>
                       Accepter
                     </button>
                     <button
-                      onClick={() => confirmRemoveInvitation(invitation.uid)}
+                      onClick={() =>
+                        confirmRemoveInvitation(uid, invitation.sender)
+                      }
                       style={{
                         color: "red",
                         border: "1px solid red",

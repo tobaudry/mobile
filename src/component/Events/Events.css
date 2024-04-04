@@ -16,19 +16,19 @@
 .EventsVertical {
   padding-top: 335px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  grid-gap: 10px; 
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  position: relative; 
-  z-index: 1; 
+  position: relative;
+  z-index: 1;
 }
 
 .AddEventButton {
   border-radius: 50%;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   background-color: #121212;
-  color: #FFF;
+  color: #fff;
   padding: 15px 25px;
   font-size: 36px;
   cursor: pointer;
@@ -37,11 +37,11 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: 50px;
-  z-index: 2; /* Assurez-vous que le bouton a un z-index supérieur à la liste des événements */
+  z-index: 2;
 }
 
 .Title {
-  font-size : 24px;
+  font-size: 24px;
   margin: 0;
   font-style: normal;
   font-weight: 600;
@@ -52,7 +52,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin:0;
+  margin: 0;
 }
 .fullWidth {
   width: 340px;
@@ -63,9 +63,8 @@
   border-radius: 40px;
 }
 
-/* Assurez-vous de définir les styles par défaut pour les divs Event_1 */
 .Event_1 {
-  height: 234px; /* ou toute autre hauteur par défaut */
+  height: 234px;
   flex-shrink: 0;
   display: flex;
   align-items: center;

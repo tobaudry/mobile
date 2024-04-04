@@ -13,11 +13,11 @@ export default function Header({ numberOfNewItems }) {
   const userData = useUserData(uid);
 
   const handleAccountClick = () => {
-    navigate("/compte"); // Redirige vers la page Account.js lors du clic sur l'icône de profil
+    navigate("/compte");
   };
 
   const handleFriendsClick = () => {
-    navigate("/amis"); // Redirige vers la page Account.js lors du clic sur l'icône de profil
+    navigate("/amis");
   };
 
   return (

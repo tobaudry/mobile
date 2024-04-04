@@ -1,5 +1,4 @@
 function afficherLoader() {
-  // Création des éléments HTML pour le loader
   var showbox = document.createElement("div");
   showbox.classList.add("showbox");
 
@@ -19,7 +18,6 @@ function afficherLoader() {
   circle.setAttribute("stroke-width", "2");
   circle.setAttribute("stroke-miterlimit", "10");
 
-  // Ajout des éléments dans le DOM
   svg.appendChild(circle);
   loader.appendChild(svg);
   showbox.appendChild(loader);

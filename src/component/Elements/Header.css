@@ -1,6 +1,5 @@
 .HeadEvent {
-  /* position: fixed; */
-  margin:0px;
+  margin: 0px;
   background-color: #121212;
 }
 .icon {
@@ -12,13 +11,13 @@
   flex-shrink: 0;
   align-self: stretch;
 }
-.icon svg{
+.icon svg {
   width: 40px;
   height: 40px;
 }
 
 .HeadEvent {
-  margin:0px;
+  margin: 0px;
   background-color: #121212;
 }
 
@@ -86,7 +85,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
 }
 .modif {
   position: relative;
@@ -95,16 +94,15 @@
   width: 25px;
   height: 25px;
   position: absolute;
-  right:1px;
-  bottom:6px;
+  right: 1px;
+  bottom: 6px;
 }
 
-
 .ProfilPic img {
-  border-radius: 50%; /* Rendre l'image ronde */
+  border-radius: 50%;
   width: 100px;
   height: 100px;
-  object-fit: cover; /* Assurez-vous que l'image remplit le cercle */
+  object-fit: cover;
 }
 
 .popup {
@@ -117,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
 }
 
 .popup-content {
@@ -127,7 +125,7 @@
   flex-wrap: wrap;
 }
 .popup input {
-  display:none;
+  display: none;
 }
 
 .popup .ChangePic {
@@ -137,11 +135,11 @@
   width: 280px;
   height: 40px;
   border-radius: 30px;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
 }
 .popup button {
   background-color: transparent;
-  color: #FFF;
+  color: #fff;
   border-style: none;
 }
 .popup-enter {

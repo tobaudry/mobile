@@ -52,22 +52,23 @@ async function deleteFolder(id, uid) {
   }
 }
 
-async function  handleDeletePics (eventId,photoURL) {
-  console.log(eventId)
-  const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?");
+async function handleDeletePics(eventId, photoURL) {
+  console.log(eventId);
+  const confirmDelete = window.confirm(
+    "Êtes-vous sûr de vouloir supprimer cette photo ?"
+  );
   if (confirmDelete) {
     try {
-      const fileName = photoURL.split('%2F').pop().split('?')[0];
+      const fileName = photoURL.split("%2F").pop().split("?")[0];
       const storagePath = `events/${eventId}/${fileName}`;
       const storageRef = ref(storage, storagePath);
       await deleteObject(storageRef);
-      window.location.reload();
       console.log("La photo a été supprimée avec succès.");
     } catch (error) {
       console.error("Erreur lors de la suppression de la photo :", error);
     }
   }
-};
+}
 
 async function readAllPhotos(folderPath) {
   try {
@@ -78,16 +79,14 @@ async function readAllPhotos(folderPath) {
     await Promise.all(
       listResult.items.map(async (itemRef) => {
         const photoURL = await getDownloadURL(itemRef);
-        const metadata = await getMetadata(itemRef); // Get metadata for each photo
-        const createdAt = metadata.customMetadata.createdAt; // Get creation date
-        photoURLs.push({ url: photoURL, createdAt: createdAt }); // Push URL and creation date to array
+        const metadata = await getMetadata(itemRef);
+        const createdAt = metadata.customMetadata.createdAt;
+        photoURLs.push({ url: photoURL, createdAt: createdAt });
       })
     );
-
-    // Sort photos by creation date
     photoURLs.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-    return photoURLs.map(photo => photo.url); // Return only the URLs
+    return photoURLs.map((photo) => photo.url);
   } catch (error) {
     console.error(
       "Une erreur s'est produite lors de la lecture des photos :",
@@ -96,6 +95,5 @@ async function readAllPhotos(folderPath) {
     throw error;
   }
 }
-
 
 export { addFile, readAllPhotos, addProfilPic, deleteFolder, handleDeletePics };

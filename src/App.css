@@ -8,7 +8,6 @@ input {
   user-zoom: none;
 }
 h2 {
-  /* width: 315px; */
   color: #fff;
   font-size: 48px;
   font-style: normal;
@@ -49,8 +48,8 @@ ul {
   border: 1px solid #fff;
   background-color: transparent;
   color: #fff;
-  margin-top: auto; /* Ajout de cette ligne */
-  margin-bottom: auto; /* Ajout de cette ligne */
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .InputText {
   padding: 20px 20px 20px 20px;
@@ -65,10 +64,6 @@ ul {
   opacity: 0.7;
   padding: 0px 20px 0px 20px;
 }
-/* .InputText input::placeholder {
-  font-weight: bold;
-  opacity: 0.5;
-} */
 
 .popupPhone {
   background-color: #121212;
