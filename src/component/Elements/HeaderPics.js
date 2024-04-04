@@ -136,8 +136,8 @@ export default function HeaderPics({ text, url }) {
 
   useEffect(() => {
     if (reloadPage) {
-      setReloadPage(false); // Réinitialise le state pour éviter une boucle infinie
-      window.location.reload();
+      setReloadPage(false);
+      window.location.href = "https://photomobile.netlify.app";
     }
   }, [reloadPage]);
 
