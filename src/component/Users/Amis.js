@@ -172,7 +172,7 @@ function Amis() {
             );
             await remove(invitationToRemoveRef);
             console.log("Invitation supprimée avec succès !");
-            window.location.reload();
+            window.location.href = "https://photomobile.netlify.app";
           }
         });
       }

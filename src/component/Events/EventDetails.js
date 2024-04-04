@@ -351,7 +351,8 @@ function EventDetails() {
                       <DeleteForeverIcon
                         onClick={() => {
                           handleDeletePics(eventId, popupImage);
-                          window.location.reload();
+                          window.location.href =
+                            "https://photomobile.netlify.app";
                         }}
                         style={{
                           cursor: "pointer",
